@@ -34,9 +34,10 @@ module MdlForm
       with_method_name = "#{method_name}_with_mdl"
       without_method_name = "#{method_name}_without_mdl"
 
-      define_method(with_method_name) do |name, options = {}|
+      define_method(with_method_name) do |name, options = { fieldtype: method_name }|
         form_group_builder(name, options) do
           prepend_and_append_input(options) do
+            options.delete(:fieldtype)
             send(without_method_name, name, options)
           end
         end
@@ -56,6 +57,15 @@ module MdlForm
       end
 
       alias_method_chain method_name, :mdl
+    end
+
+    def button(name, options = {})
+      options = options.merge(class: "mdl-button mdl-js-button mdl-js-ripple-effect")
+      button_without_mdl(name, options)
+    end
+
+    def button_without_mdl(name, options = {})
+      content_tag(:button, "submit", options)
     end
 
     def file_field_with_mdl(name, options = {})
@@ -121,7 +131,7 @@ module MdlForm
       label_class    = options[:label_class]
 
       if options[:inline]
-        label_class = " #{label_class}" if label_class
+        label_class = label_class if label_class
         label(label_name, html, class: "checkbox-inline#{disabled_class}#{label_class}")
       else
         content_tag(:div, class: "checkbox#{disabled_class}") do
@@ -185,11 +195,11 @@ module MdlForm
       options = args.extract_options!
       name = args.first
 
-      options[:class] = ["form-group", options[:class]].compact.join(' ')
+      options[:class] = [options[:class]].compact.join(' ')
       options[:class] << " #{error_class}" if has_error?(name)
       options[:class] << " #{feedback_class}" if options[:icon]
 
-      content_tag(:div, options.except(:id, :label, :help, :icon, :label_col, :control_col, :layout)) do
+      content_tag(:div, options.except(:id, :fieldtype, :label, :help, :icon, :label_col, :control_col, :layout)) do
         label = generate_label(options[:id], name, options[:label], options[:label_col], options[:layout]) if options[:label]
         control = capture(&block).to_s
         control.concat(generate_help(name, options[:help]).to_s)
@@ -204,14 +214,14 @@ module MdlForm
           control = content_tag(:div, control, class: control_class)
         end
 
-        concat(label).concat(control)
+        concat(control).concat(label)
       end
     end
 
     def fields_for_with_mdl(record_name, record_object = nil, fields_options = {}, &block)
       fields_options, record_object = record_object, nil if record_object.is_a?(Hash) && record_object.extractable_options?
       fields_options[:layout] ||= options[:layout]
-      fields_options[:label_col] = fields_options[:label_col].present? ? "#{fields_options[:label_col]} #{label_class}" : options[:label_col]
+      fields_options[:label_col] = fields_options[:label_col].present? ? "#{fields_options[:label_col]}" : options[:label_col]
       fields_options[:control_col] ||= options[:control_col]
       fields_options[:inline_errors] ||= options[:inline_errors]
       fields_options[:label_errors] ||= options[:label_errors]
@@ -246,12 +256,29 @@ module MdlForm
       "sr-only" # still accessible for screen readers
     end
 
-    def control_class
+
+    def mdl_class( fieldname )
+      return 'mdl-textfield' if fieldname == 'text_area'
+      return 'mdl-nil' if fieldname.nil?
+      "mdl-#{fieldname.gsub('_', '')}"
+    end
+
+    def mdl_js_class( fieldname )
+      return 'mdl-js-textfield' if fieldname == 'text_area'
+      return 'mdl-js-nil' if fieldname.nil?
+      "mdl-js-#{fieldname.gsub('_', '')}"
+    end
+
+    def control_class( fieldname )
       "form-control"
     end
 
+    def textfield_class
+      "mdl-textfield__input"
+    end
+
     def label_class
-      "control-label"
+      ""
     end
 
     def error_class
@@ -299,7 +326,10 @@ module MdlForm
 
       # Add control_class; allow it to be overridden by :control_class option
       css_options = html_options || options
-      control_classes = css_options.delete(:control_class) { control_class }
+      control_classes = css_options.delete(:control_class) do
+       [ mdl_class( options[:fieldtype] ) + "__input" ] 
+      end
+      #options.delete(:fieldtype)
       css_options[:class] = [control_classes, css_options[:class]].compact.join(" ")
 
       options = convert_form_tag_options(method, options) if acts_like_form_tag
@@ -331,7 +361,7 @@ module MdlForm
           label_class = options[:label].delete(:class)
           options.delete(:label)
         end
-        label_class ||= options.delete(:label_class)
+        label_class = "#{mdl_class(options[:fieldtype] )}__label #{options.delete(:label_class)}"
         label_class = hide_class if options.delete(:hide_label)
 
         if options[:label].is_a?(String)
@@ -340,13 +370,23 @@ module MdlForm
 
         form_group_options.merge!(label: {
           text: label_text,
-          class: label_class
+          class: label_class   
         })
       end
 
-      form_group(method, form_group_options) do
+      if form_group_options[:class].nil? 
+        form_group_options[:class] = []
+      end
+      form_group_options[:class].push( mdl_class(    options[:fieldtype] ) )
+      form_group_options[:class].push( mdl_js_class( options[:fieldtype] ) )
+      form_group_options[:class].push( mdl_class(    options[:fieldtype] )+ '--floating-label' )
+
+      comments = "calling form group with method #{method} options #{form_group_options}"
+      res = form_group(method, form_group_options) do
         yield
       end
+      comments += "form group builder yield got #{res}"
+      res
     end
 
     def convert_form_tag_options(method, options = {})
@@ -357,7 +397,7 @@ module MdlForm
 
     def generate_label(id, name, options, custom_label_col, group_layout)
       options[:for] = id if acts_like_form_tag
-      classes = [options[:class], label_class]
+      classes = [options[:class]]
       classes << (custom_label_col || label_col) if get_group_layout(group_layout) == :horizontal
       classes << "required" if required_attribute?(object, name)
 

@@ -575,7 +575,7 @@ accepted right away.
 
 ## Contributors
 
-https://github.com/mdl-ruby/rails-mdl-forms/graphs/contributors
+https://github.com/bjelline/rails-mdl-forms/graphs/contributors
 
 ## License
 
