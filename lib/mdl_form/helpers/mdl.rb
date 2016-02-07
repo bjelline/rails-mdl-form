@@ -1,6 +1,6 @@
-module BootstrapForm
+module MdlForm
   module Helpers
-    module Bootstrap
+    module Mdl
       def submit(name = nil, options = {})
         options.reverse_merge! class: 'btn btn-default'
         super(name, options)
@@ -23,7 +23,7 @@ module BootstrapForm
       end
 
       def error_summary
-        content_tag :ul, class: 'rails-bootstrap-forms-error-summary' do
+        content_tag :ul, class: 'rails-mdl-forms-error-summary' do
           object.errors.full_messages.each do |error|
             concat content_tag(:li, error)
           end

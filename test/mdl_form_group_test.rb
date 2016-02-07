@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class BootstrapFormGroupTest < ActionView::TestCase
-  include BootstrapForm::Helper
+class MdlFormGroupTest < ActionView::TestCase
+  include MdlForm::Helper
 
   def setup
     setup_test_fixture
@@ -188,11 +188,11 @@ class BootstrapFormGroupTest < ActionView::TestCase
     assert_equal expected, @builder.email_field(:email, wrapper_class: 'none-margin')
   end
 
-  test "adds class to wrapped form_group by a field with errors when bootstrap_form_for is used" do
+  test "adds class to wrapped form_group by a field with errors when mdl_form_for is used" do
     @user.email = nil
     @user.valid?
 
-    output = bootstrap_form_for(@user) do |f|
+    output = mdl_form_for(@user) do |f|
       f.text_field(:email, help: 'This is required', wrapper_class: 'none-margin')
     end
 
@@ -256,7 +256,7 @@ class BootstrapFormGroupTest < ActionView::TestCase
 
   test "custom form group layout option" do
     expected = %{<form accept-charset="UTF-8" action="/users" class="form-horizontal" id="new_user" method="post" role="form"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div><div class="form-group"><label class="control-label required" for="user_email">Email</label><input class="form-control" id="user_email" name="user[email]" type="email" value="steve@example.com" /></div></form>}
-    assert_equal expected, bootstrap_form_for(@user, layout: :horizontal) { |f| f.email_field :email, layout: :inline }
+    assert_equal expected, mdl_form_for(@user, layout: :horizontal) { |f| f.email_field :email, layout: :inline }
   end
 
   test "non-default column span on form is reflected in form_group" do

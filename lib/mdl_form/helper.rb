@@ -1,11 +1,11 @@
 require_relative 'helpers/nested_form'
 
-module BootstrapForm
+module MdlForm
   module Helper
-    include ::BootstrapForm::Helpers::NestedForm
+    include ::MdlForm::Helpers::NestedForm
 
-    def bootstrap_form_for(object, options = {}, &block)
-      options.reverse_merge!({builder: BootstrapForm::FormBuilder})
+    def mdl_form_for(object, options = {}, &block)
+      options.reverse_merge!({builder: MdlForm::FormBuilder})
 
       options[:html] ||= {}
       options[:html][:role] ||= 'form'
@@ -26,10 +26,10 @@ module BootstrapForm
       end
     end
 
-    def bootstrap_form_tag(options = {}, &block)
+    def mdl_form_tag(options = {}, &block)
       options[:acts_like_form_tag] = true
 
-      bootstrap_form_for("", options, &block)
+      mdl_form_for("", options, &block)
     end
 
     def temporarily_disable_field_error_proc

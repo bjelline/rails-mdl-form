@@ -1,10 +1,10 @@
-.rails-bootstrap-forms-date-select select,
-.rails-bootstrap-forms-time-select select,
-.rails-bootstrap-forms-datetime-select select {
+.rails-mdl-forms-date-select select,
+.rails-mdl-forms-time-select select,
+.rails-mdl-forms-datetime-select select {
   display: inline-block;
   width: auto;
 }
 
-.rails-bootstrap-forms-error-summary {
+.rails-mdl-forms-error-summary {
   margin-top: 10px;
 }

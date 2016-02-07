@@ -1,18 +1,18 @@
 begin
   require 'nested_form/builder_mixin'
 
-  module BootstrapForm
-    class NestedFormBuilder < ::BootstrapForm::FormBuilder
+  module MdlForm
+    class NestedFormBuilder < ::MdlForm::FormBuilder
       include ::NestedForm::BuilderMixin
     end
   end
 
-  module BootstrapForm
+  module MdlForm
     module Helpers
       module NestedForm
-        def bootstrap_nested_form_for(object, options = {}, &block)
-          options.reverse_merge!({builder: BootstrapForm::NestedFormBuilder})
-          bootstrap_form_for(object, options) do |f|
+        def mdl_nested_form_for(object, options = {}, &block)
+          options.reverse_merge!({builder: MdlForm::NestedFormBuilder})
+          mdl_form_for(object, options) do |f|
             capture(f, &block).to_s << after_nested_form_callbacks
           end
         end
@@ -21,10 +21,10 @@ begin
   end
 
 rescue LoadError
-  module BootstrapForm
+  module MdlForm
     module Helpers
       module NestedForm
-        def bootstrap_nested_form_for(object, options = {}, &block)
+        def mdl_nested_form_for(object, options = {}, &block)
           raise 'nested_forms was not found. Is it in your Gemfile?'
         end
       end

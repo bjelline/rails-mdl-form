@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bootstrap_form (2.3.0)
+    mdl_form (0.1.0)
 
 GEM
   remote: http://rubygems.org/
@@ -90,9 +90,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootstrap_form!
   jquery-rails
+  mdl_form!
   mocha
   rails (~> 4.0)
   sqlite3
   timecop (~> 0.7.1)
+
+BUNDLED WITH
+   1.11.2

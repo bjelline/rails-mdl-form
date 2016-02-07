@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class BootstrapSelectsTest < ActionView::TestCase
-  include BootstrapForm::Helper
+class MdlSelectsTest < ActionView::TestCase
+  include MdlForm::Helper
 
   def setup
     setup_test_fixture
@@ -17,7 +17,7 @@ class BootstrapSelectsTest < ActionView::TestCase
     assert_equal expected, @builder.select(:status, [['activated', 1], ['blocked', 2]])
   end
 
-  test "bootstrap_specific options are handled correctly" do
+  test "mdl_specific options are handled correctly" do
     expected = %{<div class="form-group"><label class="control-label" for="user_status">My Status Label</label><select class="form-control" id="user_status" name="user[status]"><option value="1">activated</option>\n<option value="2">blocked</option></select><span class="help-block">Help!</span></div>}
     assert_equal expected, @builder.select(:status, [['activated', 1], ['blocked', 2]], label: "My Status Label", help: "Help!" )
   end

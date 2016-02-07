@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class BootstrapFieldsTest < ActionView::TestCase
-  include BootstrapForm::Helper
+class MdlFieldsTest < ActionView::TestCase
+  include MdlForm::Helper
 
   def setup
     setup_test_fixture
@@ -98,10 +98,10 @@ class BootstrapFieldsTest < ActionView::TestCase
     assert_equal expected, @builder.week_field(:misc)
   end
 
-  test "bootstrap_form_for helper works for associations" do
+  test "mdl_form_for helper works for associations" do
     @user.address = Address.new(street: '123 Main Street')
 
-    output = bootstrap_form_for(@user) do |f|
+    output = mdl_form_for(@user) do |f|
       f.fields_for :address do |af|
         af.text_field(:street)
       end
@@ -111,10 +111,10 @@ class BootstrapFieldsTest < ActionView::TestCase
     assert_equal expected, output
   end
 
-  test "bootstrap_form_for helper works for serialized hash attributes" do
+  test "mdl_form_for helper works for serialized hash attributes" do
     @user.preferences = { favorite_color: "cerulean" }
 
-    output = bootstrap_form_for(@user) do |f|
+    output = mdl_form_for(@user) do |f|
       f.fields_for :preferences do |builder|
         builder.text_field :favorite_color, value: @user.preferences[:favorite_color]
       end
@@ -127,7 +127,7 @@ class BootstrapFieldsTest < ActionView::TestCase
   test "fields_for correctly passes horizontal style from parent builder" do
     @user.address = Address.new(street: '123 Main Street')
 
-    output = bootstrap_form_for(@user, layout: :horizontal, label_col: 'col-sm-2', control_col: 'col-sm-10') do |f|
+    output = mdl_form_for(@user, layout: :horizontal, label_col: 'col-sm-2', control_col: 'col-sm-10') do |f|
       f.fields_for :address do |af|
         af.text_field(:street)
       end
@@ -140,7 +140,7 @@ class BootstrapFieldsTest < ActionView::TestCase
   test "fields_for correctly passes inline style from parent builder" do
     @user.address = Address.new(street: '123 Main Street')
 
-    output = bootstrap_form_for(@user, layout: :inline) do |f|
+    output = mdl_form_for(@user, layout: :inline) do |f|
       f.fields_for :address do |af|
         af.text_field(:street)
       end

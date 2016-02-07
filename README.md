@@ -1,22 +1,24 @@
-[![Build Status](https://travis-ci.org/bootstrap-ruby/rails-bootstrap-forms.png)](https://travis-ci.org/bootstrap-ruby/rails-bootstrap-forms)
-[![Gem Version](https://badge.fury.io/rb/bootstrap_form.svg)](http://badge.fury.io/rb/bootstrap_form)
+# Rails Material Design Lite Forms
 
-# Rails Bootstrap Forms
+**Rails MDL Forms** is a rails form builder that makes it super easy to integrate
+material design forms into your rails application.
 
-**Rails Bootstrap Forms** is a rails form builder that makes it super easy to integrate
-twitter bootstrap-style forms into your rails application.
+## THIS IS JUST A DRAFT, NOT A FINISHED GEM!
+
+This is the beginning of a port of **Rails Bootstrap Forms** to Material Design.
+Do not use!  But help creating it!
 
 ## Requirements
 
 * Ruby 1.9+
 * Rails 4.0+
-* Twitter Bootstrap 3.0+
+* Material Design Lite 
 
 ## Installation
 
 Add it to your Gemfile:
 
-`gem 'bootstrap_form'`
+`gem 'mdl_form'`
 
 Then:
 
@@ -26,16 +28,16 @@ Then require the CSS in your `application.css` file:
 
 ```css
 /*
- *= require rails_bootstrap_forms
+ *= require rails_mdl_forms
  */
 ```
 
 ## Usage
 
-To get started, just use the `bootstrap_form_for` helper. Here's an example:
+To get started, just use the `mld_form_for` helper. Here's an example:
 
 ```erb
-<%= bootstrap_form_for(@user) do |f| %>
+<%= mdl_form_for(@user) do |f| %>
   <%= f.email_field :email %>
   <%= f.password_field :password %>
   <%= f.check_box :remember_me %>
@@ -47,35 +49,21 @@ This generates the following HTML:
 
 ```html
 <form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post">
-  <div class="form-group">
-    <label for="user_email">Email</label>
-    <input class="form-control" id="user_email" name="user[email]" type="email">
-  </div>
-  <div class="form-group">
-    <label for="user_password">Password</label>
-    <input class="form-control" id="user_password" name="user[password]" type="password">
-  </div>
-  <div class="checkbox">
-    <label for="user_remember_me">
-      <input name="user[remember_me]" type="hidden" value="0">
-      <input id="user_remember_me" name="user[remember_me]" type="checkbox" value="1"> Remember me
-    </label>
-  </div>
-  <input class="btn btn-default" name="commit" type="submit" value="Log In">
+  ...TBD...
 </form>
 ```
 
 ### Nested Forms
 
 In order to active [nested_form](https://github.com/ryanb/nested_form) support,
-use `bootstrap_nested_form_for` instead of `bootstrap_form_for`.
+use `mdl_nested_form_for` instead of `mdl_form_for`.
 
-### bootstrap_form_tag
+### mdl_form_tag
 
-If your form is not backed by a model, use the `bootstrap_form_tag`. Usage of this helper is the same as `bootstrap_form_for`, except no model object is passed in as the first argument. Here's an example:
+If your form is not backed by a model, use the `mdl_form_tag`. Usage of this helper is the same as `mdl_form_for`, except no model object is passed in as the first argument. Here's an example:
 
 ```erb
-<%= bootstrap_form_tag url: '/subscribe' do |f| %>
+<%= mdl_form_tag url: '/subscribe' do |f| %>
   <%= f.email_field :email, value: 'name@example.com' %>
   <%= f.submit %>
 <% end %>
@@ -284,7 +272,7 @@ To display checkboxes and radios inline, pass the `inline: true` option:
 
 #### Collections
 
-BootstrapForms also provides helpers that automatically creates the
+MdlForms also provides helpers that automatically creates the
 `form_group` and the `radio_button`s or `check_box`es for you:
 
 ```erb
@@ -329,7 +317,7 @@ You can also create a static control that isn't based on a model attribute:
 
 The multiple selects that the date and time helpers (`date_select`,
 `time_select`, `datetime_select`) generate are wrapped inside a
-`div.rails-bootstrap-forms-[date|time|datetime]-select` tag. This is because
+`div.rails-mdl-forms-[date|time|datetime]-select` tag. This is because
 Boostrap automatically stylizes ours controls as `block`s. This wrapper fix
 this defining these selects as `inline-block` and a width of `auto`.
 
@@ -358,10 +346,10 @@ You can specify your own classes like this:
 ### Accessing Rails Form Helpers
 
 If you want to use the original Rails form helpers for a particular field,
-append `_without_bootstrap` to the helper:
+append `_without_mdl` to the helper:
 
 ```erb
-<%= f.text_field_without_bootstrap :email %>
+<%= f.text_field_without_mdl :email %>
 ```
 
 ## Form Styles
@@ -376,7 +364,7 @@ use the `hide_label: true` option, which keeps your labels accessible to those
 using screen readers.
 
 ```erb
-<%= bootstrap_form_for(@user, layout: :inline) do |f| %>
+<%= mdl_form_for(@user, layout: :inline) do |f| %>
   <%= f.email_field :email, hide_label: true %>
   <%= f.password_field :password, hide_label: true %>
   <%= f.check_box :remember_me %>
@@ -400,7 +388,7 @@ In the example below, the checkbox and submit button have been wrapped in a
 `form_group` to keep them properly aligned.
 
 ```erb
-<%= bootstrap_form_for(@user, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+<%= mdl_form_for(@user, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
   <%= f.email_field :email %>
   <%= f.password_field :password %>
   <%= f.form_group do %>
@@ -415,7 +403,7 @@ In the example below, the checkbox and submit button have been wrapped in a
 The `label_col` and `control_col` css classes can also be changed per control:
 
 ```erb
-<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
+<%= mdl_form_for(@user, layout: :horizontal) do |f| %>
   <%= f.email_field :email %>
   <%= f.text_field :age, control_col: "col-sm-3" %>
   <%= f.form_group do %>
@@ -429,7 +417,7 @@ The `label_col` and `control_col` css classes can also be changed per control:
 The `layout` can be overridden per field:
 
 ```erb
-<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
+<%= mdl_form_for(@user, layout: :horizontal) do |f| %>
   <%= f.email_field :email %>
   <%= f.text_field :feet, layout: :default %>
   <%= f.text_field :inches, layout: :default %>
@@ -458,7 +446,7 @@ div (field_with_errors), but this behavior is suppressed. Here's an example:
 You can turn off inline errors for the entire form like this:
 
 ```erb
-<%= bootstrap_form_for(@user, inline_errors: false) do |f| %>
+<%= mdl_form_for(@user, inline_errors: false) do |f| %>
   ...
 <% end %>
 ```
@@ -469,7 +457,7 @@ You can also display validation errors in the field's label; just turn
 on the `:label_errors` option. Here's an example:
 
 ```
-<%= bootstrap_form_for(@user, label_errors: true) do |f| %>
+<%= mdl_form_for(@user, label_errors: true) do |f| %>
   ...
 <% end %>
 ```
@@ -478,7 +466,7 @@ By default, turning on `:label_errors` will also turn off
 `:inline_errors`. If you want both turned on, you can do that too:
 
 ```
-<%= bootstrap_form_for(@user, label_errors: true, inline_errors: true) do |f| %>
+<%= mdl_form_for(@user, label_errors: true, inline_errors: true) do |f| %>
   ...
 <% end %>
 ```
@@ -498,7 +486,7 @@ Which outputs:
 ```html
 <div class="alert alert-danger">
   <p>Please fix the errors below.</p>
-  <ul class="rails-bootstrap-forms-error-summary">
+  <ul class="rails-mdl-forms-error-summary">
     <li>Email can't be blank</li>
   </ul>
 </div>
@@ -519,7 +507,7 @@ To output a simple unordered list of errors, use the `error_summary` helper.
 Which outputs:
 
 ```html
-<ul class="rails-bootstrap-forms-error-summary">
+<ul class="rails-mdl-forms-error-summary">
   <li>Email can't be blank</li>
 </ul>
 ```
@@ -553,12 +541,12 @@ Which outputs:
 
 ## Internationalization
 
-bootstrap_form follows standard rails conventions so it's i18n-ready. See more
+mdl_form follows standard rails conventions so it's i18n-ready. See more
 here: http://guides.rubyonrails.org/i18n.html#translations-for-active-record-models
 
 ## Code Triage page
 
-http://www.codetriage.com/potenza/bootstrap_form
+http://www.codetriage.com/potenza/mdl_form
 
 ## Contributing
 
@@ -587,7 +575,7 @@ accepted right away.
 
 ## Contributors
 
-https://github.com/bootstrap-ruby/rails-bootstrap-forms/graphs/contributors
+https://github.com/mdl-ruby/rails-mdl-forms/graphs/contributors
 
 ## License
 

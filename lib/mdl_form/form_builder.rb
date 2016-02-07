@@ -1,8 +1,8 @@
-require_relative 'helpers/bootstrap'
+require_relative 'helpers/mdl'
 
-module BootstrapForm
+module MdlForm
   class FormBuilder < ActionView::Helpers::FormBuilder
-    include BootstrapForm::Helpers::Bootstrap
+    include MdlForm::Helpers::Mdl
 
     attr_reader :layout, :label_col, :control_col, :has_error, :inline_errors, :label_errors, :acts_like_form_tag
 
@@ -31,8 +31,8 @@ module BootstrapForm
     end
 
     FIELD_HELPERS.each do |method_name|
-      with_method_name = "#{method_name}_with_bootstrap"
-      without_method_name = "#{method_name}_without_bootstrap"
+      with_method_name = "#{method_name}_with_mdl"
+      without_method_name = "#{method_name}_without_mdl"
 
       define_method(with_method_name) do |name, options = {}|
         form_group_builder(name, options) do
@@ -42,12 +42,12 @@ module BootstrapForm
         end
       end
 
-      alias_method_chain method_name, :bootstrap
+      alias_method_chain method_name, :mdl
     end
 
     DATE_SELECT_HELPERS.each do |method_name|
-      with_method_name = "#{method_name}_with_bootstrap"
-      without_method_name = "#{method_name}_without_bootstrap"
+      with_method_name = "#{method_name}_with_mdl"
+      without_method_name = "#{method_name}_without_mdl"
 
       define_method(with_method_name) do |name, options = {}, html_options = {}|
         form_group_builder(name, options, html_options) do
@@ -55,62 +55,62 @@ module BootstrapForm
         end
       end
 
-      alias_method_chain method_name, :bootstrap
+      alias_method_chain method_name, :mdl
     end
 
-    def file_field_with_bootstrap(name, options = {})
+    def file_field_with_mdl(name, options = {})
       form_group_builder(name, options.reverse_merge(control_class: nil)) do
-        file_field_without_bootstrap(name, options)
+        file_field_without_mdl(name, options)
       end
     end
 
-    alias_method_chain :file_field, :bootstrap
+    alias_method_chain :file_field, :mdl
 
     if Gem::Version.new(Rails::VERSION::STRING) >= Gem::Version.new("4.1.0")
-      def select_with_bootstrap(method, choices = nil, options = {}, html_options = {}, &block)
+      def select_with_mdl(method, choices = nil, options = {}, html_options = {}, &block)
         form_group_builder(method, options, html_options) do
-          select_without_bootstrap(method, choices, options, html_options, &block)
+          select_without_mdl(method, choices, options, html_options, &block)
         end
       end
     else
-      def select_with_bootstrap(method, choices, options = {}, html_options = {})
+      def select_with_mdl(method, choices, options = {}, html_options = {})
         form_group_builder(method, options, html_options) do
-          select_without_bootstrap(method, choices, options, html_options)
+          select_without_mdl(method, choices, options, html_options)
         end
       end
     end
 
-    alias_method_chain :select, :bootstrap
+    alias_method_chain :select, :mdl
 
-    def collection_select_with_bootstrap(method, collection, value_method, text_method, options = {}, html_options = {})
+    def collection_select_with_mdl(method, collection, value_method, text_method, options = {}, html_options = {})
       form_group_builder(method, options, html_options) do
-        collection_select_without_bootstrap(method, collection, value_method, text_method, options, html_options)
+        collection_select_without_mdl(method, collection, value_method, text_method, options, html_options)
       end
     end
 
-    alias_method_chain :collection_select, :bootstrap
+    alias_method_chain :collection_select, :mdl
 
-    def grouped_collection_select_with_bootstrap(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
+    def grouped_collection_select_with_mdl(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
       form_group_builder(method, options, html_options) do
-        grouped_collection_select_without_bootstrap(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
+        grouped_collection_select_without_mdl(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
       end
     end
 
-    alias_method_chain :grouped_collection_select, :bootstrap
+    alias_method_chain :grouped_collection_select, :mdl
 
-    def time_zone_select_with_bootstrap(method, priority_zones = nil, options = {}, html_options = {})
+    def time_zone_select_with_mdl(method, priority_zones = nil, options = {}, html_options = {})
       form_group_builder(method, options, html_options) do
-        time_zone_select_without_bootstrap(method, priority_zones, options, html_options)
+        time_zone_select_without_mdl(method, priority_zones, options, html_options)
       end
     end
 
-    alias_method_chain :time_zone_select, :bootstrap
+    alias_method_chain :time_zone_select, :mdl
 
-    def check_box_with_bootstrap(name, options = {}, checked_value = "1", unchecked_value = "0", &block)
+    def check_box_with_mdl(name, options = {}, checked_value = "1", unchecked_value = "0", &block)
       options = options.symbolize_keys!
       check_box_options = options.except(:label, :label_class, :help, :inline)
 
-      html = check_box_without_bootstrap(name, check_box_options, checked_value, unchecked_value)
+      html = check_box_without_mdl(name, check_box_options, checked_value, unchecked_value)
       label_content = block_given? ? capture(&block) : options[:label]
       html.concat(" ").concat(label_content || (object && object.class.human_attribute_name(name)) || name.to_s.humanize)
 
@@ -130,13 +130,13 @@ module BootstrapForm
       end
     end
 
-    alias_method_chain :check_box, :bootstrap
+    alias_method_chain :check_box, :mdl
 
-    def radio_button_with_bootstrap(name, value, *args)
+    def radio_button_with_mdl(name, value, *args)
       options = args.extract_options!.symbolize_keys!
       args << options.except(:label, :label_class, :help, :inline)
 
-      html = radio_button_without_bootstrap(name, value, *args) + " " + options[:label]
+      html = radio_button_without_mdl(name, value, *args) + " " + options[:label]
 
       disabled_class = " disabled" if options[:disabled]
       label_class    = options[:label_class]
@@ -151,9 +151,9 @@ module BootstrapForm
       end
     end
 
-    alias_method_chain :radio_button, :bootstrap
+    alias_method_chain :radio_button, :mdl
 
-    def collection_check_boxes_with_bootstrap(*args)
+    def collection_check_boxes_with_mdl(*args)
       html = inputs_collection(*args) do |name, value, options|
         options[:multiple] = true
         check_box(name, options, value, nil)
@@ -161,23 +161,23 @@ module BootstrapForm
       hidden_field(args.first,{value: "", multiple: true}).concat(html)
     end
 
-    alias_method_chain :collection_check_boxes, :bootstrap
+    alias_method_chain :collection_check_boxes, :mdl
 
-    def collection_radio_buttons_with_bootstrap(*args)
+    def collection_radio_buttons_with_mdl(*args)
       inputs_collection(*args) do |name, value, options|
         radio_button(name, value, options)
       end
     end
 
-    alias_method_chain :collection_radio_buttons, :bootstrap
+    alias_method_chain :collection_radio_buttons, :mdl
 
     def check_boxes_collection(*args)
-      warn "'BootstrapForm#check_boxes_collection' is deprecated, use 'BootstrapForm#collection_check_boxes' instead"
+      warn "'MdlForm#check_boxes_collection' is deprecated, use 'MdlForm#collection_check_boxes' instead"
       collection_check_boxes(*args)
     end
 
     def radio_buttons_collection(*args)
-      warn "'BootstrapForm#radio_buttons_collection' is deprecated, use 'BootstrapForm#collection_radio_buttons' instead"
+      warn "'MdlForm#radio_buttons_collection' is deprecated, use 'MdlForm#collection_radio_buttons' instead"
       collection_radio_buttons(*args)
     end
 
@@ -208,17 +208,17 @@ module BootstrapForm
       end
     end
 
-    def fields_for_with_bootstrap(record_name, record_object = nil, fields_options = {}, &block)
+    def fields_for_with_mdl(record_name, record_object = nil, fields_options = {}, &block)
       fields_options, record_object = record_object, nil if record_object.is_a?(Hash) && record_object.extractable_options?
       fields_options[:layout] ||= options[:layout]
       fields_options[:label_col] = fields_options[:label_col].present? ? "#{fields_options[:label_col]} #{label_class}" : options[:label_col]
       fields_options[:control_col] ||= options[:control_col]
       fields_options[:inline_errors] ||= options[:inline_errors]
       fields_options[:label_errors] ||= options[:label_errors]
-      fields_for_without_bootstrap(record_name, record_object, fields_options, &block)
+      fields_for_without_mdl(record_name, record_object, fields_options, &block)
     end
 
-    alias_method_chain :fields_for, :bootstrap
+    alias_method_chain :fields_for, :mdl
 
     private
 
@@ -263,7 +263,7 @@ module BootstrapForm
     end
 
     def control_specific_class(method)
-      "rails-bootstrap-forms-#{method.gsub(/_/, "-")}"
+      "rails-mdl-forms-#{method.gsub(/_/, "-")}"
     end
 
     def has_error?(name)

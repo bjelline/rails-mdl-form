@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class BootstrapRadioButtonTest < ActionView::TestCase
-  include BootstrapForm::Helper
+class MdlRadioButtonTest < ActionView::TestCase
+  include MdlForm::Helper
 
   def setup
     setup_test_fixture

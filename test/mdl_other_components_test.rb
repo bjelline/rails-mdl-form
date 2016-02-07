@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class BootstrapOtherComponentsTest < ActionView::TestCase
-  include BootstrapForm::Helper
+  include MdlForm::Helper
 
   def setup
     setup_test_fixture

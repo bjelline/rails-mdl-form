@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class BootstrapCheckboxTest < ActionView::TestCase
-  include BootstrapForm::Helper
+class MdlCheckboxTest < ActionView::TestCase
+  include MdlForm::Helper
 
   def setup
     setup_test_fixture
