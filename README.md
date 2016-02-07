@@ -6,7 +6,8 @@ material design forms into your rails application.
 ## THIS IS JUST A DRAFT, NOT A FINISHED GEM!
 
 This is the beginning of a port of **Rails Bootstrap Forms** to Material Design.
-Do not use!  But help creating it!
+Do not use!  But help creating it!  The rest of this README is fiction!  a discription of
+a hoped for future state of the gem, not of what it does now!
 
 ## Requirements
 
@@ -18,7 +19,7 @@ Do not use!  But help creating it!
 
 Add it to your Gemfile:
 
-`gem 'mdl_form'`
+`gem 'mdl_form', :git => "git://github.com/bjelline/rails_mdl_form.git"`
 
 Then:
 
