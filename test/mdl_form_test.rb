@@ -3,10 +3,6 @@ require 'test_helper'
 class MdlFormTest < ActionView::TestCase
   include MdlForm::Helper
 
-  def setup
-    setup_test_fixture
-  end
-
   test "default-style forms" do
     expected = %{<form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post" role="form"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div></form>}
     assert_equal expected, mdl_form_for(@user) { |f| nil }

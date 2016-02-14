@@ -31,32 +31,22 @@ module MdlForm
     end
 
     FIELD_HELPERS.each do |method_name|
-      with_method_name = "#{method_name}_with_mdl"
-      without_method_name = "#{method_name}_without_mdl"
-
-      define_method(with_method_name) do |name, options = { fieldtype: method_name }|
+      define_method(method_name) do |name, options = { fieldtype: method_name }|
         form_group_builder(name, options) do
           prepend_and_append_input(options) do
             options.delete(:fieldtype)
-            send(without_method_name, name, options)
+            super(name, options)
           end
         end
       end
-
-      alias_method_chain method_name, :mdl
     end
 
     DATE_SELECT_HELPERS.each do |method_name|
-      with_method_name = "#{method_name}_with_mdl"
-      without_method_name = "#{method_name}_without_mdl"
-
-      define_method(with_method_name) do |name, options = {}, html_options = {}|
+       define_method(method_name) do |name, options = {}, html_options = {}|
         form_group_builder(name, options, html_options) do
-          content_tag(:div, send(without_method_name, name, options, html_options), class: control_specific_class(method_name))
+          content_tag(:div, super(name, options, html_options), class: control_specific_class(method_name))
         end
       end
-
-      alias_method_chain method_name, :mdl
     end
 
     def button(name, options = {})
@@ -68,59 +58,41 @@ module MdlForm
       content_tag(:button, "submit", options)
     end
 
-    def file_field_with_mdl(name, options = {})
+    def file_field(name, options = {})
       form_group_builder(name, options.reverse_merge(control_class: nil)) do
-        file_field_without_mdl(name, options)
+        super(name, options)
       end
     end
 
-    alias_method_chain :file_field, :mdl
-
-    if Gem::Version.new(Rails::VERSION::STRING) >= Gem::Version.new("4.1.0")
-      def select_with_mdl(method, choices = nil, options = {}, html_options = {}, &block)
-        form_group_builder(method, options, html_options) do
-          select_without_mdl(method, choices, options, html_options, &block)
-        end
-      end
-    else
-      def select_with_mdl(method, choices, options = {}, html_options = {})
-        form_group_builder(method, options, html_options) do
-          select_without_mdl(method, choices, options, html_options)
-        end
-      end
-    end
-
-    alias_method_chain :select, :mdl
-
-    def collection_select_with_mdl(method, collection, value_method, text_method, options = {}, html_options = {})
+    def select(method, choices = nil, options = {}, html_options = {}, &block)
       form_group_builder(method, options, html_options) do
-        collection_select_without_mdl(method, collection, value_method, text_method, options, html_options)
+        super(method, choices, options, html_options, &block)
       end
     end
 
-    alias_method_chain :collection_select, :mdl
-
-    def grouped_collection_select_with_mdl(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
+    def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
       form_group_builder(method, options, html_options) do
-        grouped_collection_select_without_mdl(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
+        super(method, collection, value_method, text_method, options, html_options)
       end
     end
 
-    alias_method_chain :grouped_collection_select, :mdl
-
-    def time_zone_select_with_mdl(method, priority_zones = nil, options = {}, html_options = {})
+    def grouped_collection_select(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
       form_group_builder(method, options, html_options) do
-        time_zone_select_without_mdl(method, priority_zones, options, html_options)
+        super(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
       end
     end
 
-    alias_method_chain :time_zone_select, :mdl
+    def time_zone_select(method, priority_zones = nil, options = {}, html_options = {})
+      form_group_builder(method, options, html_options) do
+        super(method, priority_zones, options, html_options)
+      end
+    end
 
-    def check_box_with_mdl(name, options = {}, checked_value = "1", unchecked_value = "0", &block)
+    def check_box(name, options = {}, checked_value = "1", unchecked_value = "0", &block)
       options = options.symbolize_keys!
       check_box_options = options.except(:label, :label_class, :help, :inline)
 
-      html = check_box_without_mdl(name, check_box_options, checked_value, unchecked_value)
+      html = super(name, check_box_options, checked_value, unchecked_value)
       label_content = block_given? ? capture(&block) : options[:label]
       html.concat(" ").concat(label_content || (object && object.class.human_attribute_name(name)) || name.to_s.humanize)
 
@@ -140,13 +112,11 @@ module MdlForm
       end
     end
 
-    alias_method_chain :check_box, :mdl
-
-    def radio_button_with_mdl(name, value, *args)
+    def radio_button(name, value, *args)
       options = args.extract_options!.symbolize_keys!
       args << options.except(:label, :label_class, :help, :inline)
 
-      html = radio_button_without_mdl(name, value, *args) + " " + options[:label]
+      html = super(name, value, *args) + " " + options[:label]
 
       disabled_class = " disabled" if options[:disabled]
       label_class    = options[:label_class]
@@ -161,9 +131,7 @@ module MdlForm
       end
     end
 
-    alias_method_chain :radio_button, :mdl
-
-    def collection_check_boxes_with_mdl(*args)
+    def collection_check_boxes(*args)
       html = inputs_collection(*args) do |name, value, options|
         options[:multiple] = true
         check_box(name, options, value, nil)
@@ -171,24 +139,10 @@ module MdlForm
       hidden_field(args.first,{value: "", multiple: true}).concat(html)
     end
 
-    alias_method_chain :collection_check_boxes, :mdl
-
-    def collection_radio_buttons_with_mdl(*args)
+    def collection_radio_buttons(*args)
       inputs_collection(*args) do |name, value, options|
         radio_button(name, value, options)
       end
-    end
-
-    alias_method_chain :collection_radio_buttons, :mdl
-
-    def check_boxes_collection(*args)
-      warn "'MdlForm#check_boxes_collection' is deprecated, use 'MdlForm#collection_check_boxes' instead"
-      collection_check_boxes(*args)
-    end
-
-    def radio_buttons_collection(*args)
-      warn "'MdlForm#radio_buttons_collection' is deprecated, use 'MdlForm#collection_radio_buttons' instead"
-      collection_radio_buttons(*args)
     end
 
     def form_group(*args, &block)
@@ -218,17 +172,15 @@ module MdlForm
       end
     end
 
-    def fields_for_with_mdl(record_name, record_object = nil, fields_options = {}, &block)
+    def fields_for(record_name, record_object = nil, fields_options = {}, &block)
       fields_options, record_object = record_object, nil if record_object.is_a?(Hash) && record_object.extractable_options?
       fields_options[:layout] ||= options[:layout]
       fields_options[:label_col] = fields_options[:label_col].present? ? "#{fields_options[:label_col]}" : options[:label_col]
       fields_options[:control_col] ||= options[:control_col]
       fields_options[:inline_errors] ||= options[:inline_errors]
       fields_options[:label_errors] ||= options[:label_errors]
-      fields_for_without_mdl(record_name, record_object, fields_options, &block)
+      super(record_name, record_object, fields_options, &block)
     end
-
-    alias_method_chain :fields_for, :mdl
 
     private
 
@@ -303,7 +255,7 @@ module MdlForm
 
       target = (obj.class == Class) ? obj : obj.class
 
-      target_validators = if target.respond_to? :validators_on 
+      target_validators = if target.respond_to? :validators_on
                             target.validators_on(attribute).map(&:class)
                           else
                             []
