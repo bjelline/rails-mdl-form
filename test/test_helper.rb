@@ -14,6 +14,8 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 class ActionView::TestCase
 
+  setup :setup_test_fixture
+
   def setup_test_fixture
     @user = User.new(email: 'steve@example.com', password: 'secret', comments: 'my comment')
     @builder = MdlForm::FormBuilder.new(:user, @user, self, {})
