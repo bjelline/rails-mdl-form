@@ -22,7 +22,7 @@ module MdlForm
       end
 
       temporarily_disable_field_error_proc do
-        form_with(object, options, &block)
+        form_with(options, &block)
       end
     end
 
