@@ -4,6 +4,28 @@ module MdlForm
   module Helper
     include ::MdlForm::Helpers::NestedForm
 
+    def mdl_form_with(options = {}, &block)
+      options.reverse_merge!({builder: MdlForm::FormBuilder})
+
+      options[:html] ||= {}
+      options[:html][:role] ||= 'form'
+
+      layout = case options[:layout]
+        when :inline
+          "form-inline"
+        when :horizontal
+          "form-horizontal"
+      end
+
+      if layout
+        options[:html][:class] = [options[:html][:class], layout].compact.join(" ")
+      end
+
+      temporarily_disable_field_error_proc do
+        form_with(object, options, &block)
+      end
+    end
+
     def mdl_form_for(object, options = {}, &block)
       options.reverse_merge!({builder: MdlForm::FormBuilder})
 
