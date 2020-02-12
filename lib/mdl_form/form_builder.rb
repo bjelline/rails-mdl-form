@@ -9,7 +9,7 @@ module MdlForm
     FIELD_HELPERS = %w{color_field date_field datetime_field datetime_local_field
       email_field month_field number_field password_field phone_field
       range_field search_field telephone_field text_area text_field time_field
-      url_field week_field}
+      url_field week_field password_field}
 
     DATE_SELECT_HELPERS = %w{date_select time_select datetime_select}
 

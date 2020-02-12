@@ -6,20 +6,20 @@ material design forms into your rails application.
 ## THIS IS JUST A DRAFT, NOT A FINISHED GEM!
 
 This is the beginning of a port of **Rails Bootstrap Forms** to Material Design.
-Do not use!  But help creating it!  The rest of this README is fiction!  a discription of
+Do not use! But help creating it! The rest of this README is fiction! a discription of
 a hoped for future state of the gem, not of what it does now!
 
 ## Requirements
 
-* Ruby 1.9+
-* Rails 4.0+
-* Material Design Lite 
+- Ruby 1.9+
+- Rails 4.0+
+- Material Design Lite
 
 ## Installation
 
 Add it to your Gemfile:
 
-`gem 'mdl_form', :git => "git://github.com/bjelline/rails_mdl_form.git"`
+`gem 'mdl_form', :github => "bjelline/rails-mdl-form"
 
 Then:
 
@@ -49,7 +49,13 @@ To get started, just use the `mld_form_for` helper. Here's an example:
 This generates the following HTML:
 
 ```html
-<form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post">
+<form
+  accept-charset="UTF-8"
+  action="/users"
+  class="new_user"
+  id="new_user"
+  method="post"
+>
   ...TBD...
 </form>
 ```
@@ -74,36 +80,36 @@ If your form is not backed by a model, use the `mdl_form_tag`. Usage of this hel
 
 This gem wraps the following Rails form helpers:
 
-* check_box
-* collection_check_boxes
-* collection_select
-* color_field
-* date_field
-* date_select
-* datetime_field
-* datetime_local_field
-* datetime_select
-* email_field
-* file_field
-* grouped_collection_select
-* hidden_field (not wrapped, but supported)
-* month_field
-* number_field
-* password_field
-* phone_field
-* radio_button
-* collection_radio_buttons
-* range_field
-* search_field
-* select
-* telephone_field
-* text_area
-* text_field
-* time_field
-* time_select
-* time_zone_select
-* url_field
-* week_field
+- check_box
+- collection_check_boxes
+- collection_select
+- color_field
+- date_field
+- date_select
+- datetime_field
+- datetime_local_field
+- datetime_select
+- email_field
+- file_field
+- grouped_collection_select
+- hidden_field (not wrapped, but supported)
+- month_field
+- number_field
+- password_field
+- phone_field
+- radio_button
+- collection_radio_buttons
+- range_field
+- search_field
+- select
+- telephone_field
+- text_area
+- text_field
+- time_field
+- time_select
+- time_zone_select
+- url_field
+- week_field
 
 These helpers accept the same options as the standard Rails form helpers, with
 a few extra options:
@@ -132,13 +138,13 @@ To add custom classes to the field's label:
 #### Required Fields
 
 A label that is associated with a required field is automatically annotated with
-a `required` CSS class. You are free to add any appropriate CSS to style 
-required fields as desired.  One example would be to automatically add an
+a `required` CSS class. You are free to add any appropriate CSS to style
+required fields as desired. One example would be to automatically add an
 asterisk to the end of the label:
 
 ```css
 label.required:after {
-  content:" *";
+  content: " *";
 }
 ```
 
@@ -174,7 +180,7 @@ option or turn them off completely by passing `help: false`.
 ### Icons
 
 To add an icon to a field, use the `icon` option and pass the icon name
-*without* the 'glyphicon' prefix:
+_without_ the 'glyphicon' prefix:
 
 ```erb
 <%= f.text_field :login, icon: "user" %>
@@ -282,10 +288,11 @@ MdlForms also provides helpers that automatically creates the
 ```
 
 Collection methods accept these options:
-* `:label`: Customize the `form_group`'s label
-* `:hide_label`: Pass true to hide the `form_group`'s label
-* `:help`: Add a help span to the `form_group`
-* Other options will be forwarded to the `radio_button`/`check_box` method
+
+- `:label`: Customize the `form_group`'s label
+- `:hide_label`: Pass true to hide the `form_group`'s label
+- `:help`: Add a help span to the `form_group`
+- Other options will be forwarded to the `radio_button`/`check_box` method
 
 ### Static Controls
 
@@ -439,7 +446,13 @@ div (field_with_errors), but this behavior is suppressed. Here's an example:
 ```html
 <div class="form-group has-error">
   <label class="control-label" for="user_email">Email</label>
-  <input class="form-control" id="user_email" name="user[email]" type="email" value="">
+  <input
+    class="form-control"
+    id="user_email"
+    name="user[email]"
+    type="email"
+    value=""
+  />
   <span class="help-block">can't be blank</span>
 </div>
 ```
@@ -565,8 +578,8 @@ $ bundle exec rake
 3. Add tests for your change.
 
 4. Add your changes and make your test(s) pass. Following the conventions you
-see used in the source will increase the chance that your pull request is
-accepted right away.
+   see used in the source will increase the chance that your pull request is
+   accepted right away.
 
 5. Update the README if necessary.
 
