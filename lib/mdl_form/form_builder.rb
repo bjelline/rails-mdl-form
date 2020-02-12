@@ -9,7 +9,7 @@ module MdlForm
     FIELD_HELPERS = %w{color_field date_field datetime_field datetime_local_field
       email_field month_field number_field password_field phone_field
       range_field search_field telephone_field text_area text_field time_field
-      url_field week_field password_field}
+      url_field week_field}
 
     DATE_SELECT_HELPERS = %w{date_select time_select datetime_select}
 
@@ -210,12 +210,14 @@ module MdlForm
 
 
     def mdl_class( fieldname )
+      return 'mdl-textfield' if fieldname == 'password_field'
       return 'mdl-textfield' if fieldname == 'text_area'
       return 'mdl-nil' if fieldname.nil?
       "mdl-#{fieldname.gsub('_', '')}"
     end
 
     def mdl_js_class( fieldname )
+      return 'mdl-js-textfield' if fieldname == 'password_field'
       return 'mdl-js-textfield' if fieldname == 'text_area'
       return 'mdl-js-nil' if fieldname.nil?
       "mdl-js-#{fieldname.gsub('_', '')}"
@@ -242,7 +244,6 @@ module MdlForm
     end
 
     def control_specific_class(method)
-      return "mdl-textfield" if method == 'passwordfield'
       "rails-mdl-forms-#{method.gsub(/_/, "-")}"
     end
 
