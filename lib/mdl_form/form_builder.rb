@@ -242,6 +242,7 @@ module MdlForm
     end
 
     def control_specific_class(method)
+      return "mdl-textfield" if method == 'password_field'
       "rails-mdl-forms-#{method.gsub(/_/, "-")}"
     end
 
