@@ -211,6 +211,7 @@ module MdlForm
 
 
     def mdl_class( fieldname )
+      return 'mdl-textfield' if fieldname == 'email_field'
       return 'mdl-textfield' if fieldname == 'password_field'
       return 'mdl-textfield' if fieldname == 'text_area'
       return 'mdl-nil' if fieldname.nil?
@@ -218,6 +219,7 @@ module MdlForm
     end
 
     def mdl_js_class( fieldname )
+      return 'mdl-js-textfield' if fieldname == 'email_field'
       return 'mdl-js-textfield' if fieldname == 'password_field'
       return 'mdl-js-textfield' if fieldname == 'text_area'
       return 'mdl-js-nil' if fieldname.nil?
