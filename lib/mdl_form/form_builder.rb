@@ -31,7 +31,7 @@ module MdlForm
     end
 
     FIELD_HELPERS.each do |method_name|
-      define_method(method_name) do |name, options|
+      define_method(method_name) do |name, options = {'fieldtype' => method_name} |
         options['fieldtype'] = method_name unless options['fieldtype']
         form_group_builder(name, options) do
           prepend_and_append_input(options) do
